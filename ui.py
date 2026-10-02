@@ -14,7 +14,6 @@ def print_menu(methods):
     print("  Available Methods:\n")
     for idx, m in enumerate(methods, start=1):
         print(f"   [{idx}] {m.name}")
-        print(f"        {m.description}")
     print(f"\n   [0] Exit")
     print("=" * 70)
 
