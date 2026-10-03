@@ -1,6 +1,6 @@
 A professional, terminal-based Python application that solves root-finding problems using **10 classical numerical methods**. Built with a clean, extensible architecture where every method lives in its own file and is auto-discovered at runtime.
 
-![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
+![Python](https://img.shields.io/badge/Python-3.9%2B-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![Status](https://img.shields.io/badge/Status-Active-brightgreen)
 ![PRs](https://img.shields.io/badge/PRs-Welcome-orange)
@@ -21,6 +21,8 @@ A professional, terminal-based Python application that solves root-finding probl
 ---
 
 ## Run
+
+Python 3.9 or newer is required. The application uses only the Python standard library; no packages need to be installed.
 
 From the project directory, start the interactive menu with:
 
@@ -72,3 +74,65 @@ methods/      Numerical method implementations and auto-discovery
 reporter.py   Timestamped text report writer
 results/      Generated run reports
 ```
+
+## ⚙️ Installation
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/Asraf1270/numerical_methods.git
+cd numerical_methods
+```
+
+Then start the application:
+
+```bash
+python main.py
+```
+
+## 🧩 Adding a New Method
+
+The framework discovers `NumericalMethod` subclasses in the `methods/` package automatically. Create `methods/your_method.py`:
+
+```python
+from .base import NumericalMethod
+
+class YourMethod(NumericalMethod):
+    name = "Your Method Name"
+    description = "One-line description shown in the menu."
+    input_spec = [
+        ("x0", "Initial guess", float),
+        ("x1", "Second guess", float),
+    ]
+
+    def solve(self, f, params, tol, max_iter):
+        # params["x0"], params["x1"], etc.
+        root = ...
+        table = [[i, ..., error], ...]
+        headers = ["Iter", "x0", "x1", "Error"]
+        iterations = ...
+        return root, table, headers, iterations
+```
+
+The `solve` method returns `(root, table, headers, iterations)`. The `input_spec` entries define the values requested from the user. The method is then discovered automatically, displayed in the menu, and handled by the existing UI and report writer.
+
+## 🤝 Contributing
+
+Contributions are welcome! To add a new method:
+
+- Fork the repository.
+- Create a file in `methods/` following the pattern above.
+- Run the application with `python main.py` and try the new method.
+- Submit a pull request.
+
+Please keep the style consistent with existing methods: use type hints where helpful, write descriptive docstrings, choose clear variable names, and raise `ValueError` with a helpful message when inputs are invalid.
+
+## 📜 License
+
+This project is licensed under the MIT License — see the LICENSE file for details.
+
+## ⭐ Show Your Support
+
+If this project helped you, please give it a star ⭐ — it helps others find it!
+
+Built with ❤️ for students, engineers, and anyone learning numerical methods.
