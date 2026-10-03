@@ -18,6 +18,15 @@ def _needs_equation(method):
     return method.category == "root_finding"
 
 
+def _trim_difference_row(label, row, row_index, n_rows):
+    text = label.lower()
+    if "forward difference table" in text or "divided difference table" in text:
+        return row[: n_rows - row_index]
+    if "backward difference table" in text:
+        return row[: row_index + 1]
+    return row
+
+
 def run_method(method):
     print(f"\n--- {method.name} ---")
 
@@ -66,9 +75,11 @@ def run_method(method):
         for k, v in extras.items():
             if isinstance(v, list):
                 print(f"    {k}:")
-                for row in v:
+                n_rows = len(v)
+                for i, row in enumerate(v):
+                    display_row = _trim_difference_row(k, row, i, n_rows)
                     print("       " + "  ".join(
-                        f"{x:>10.6f}" if isinstance(x, float) else str(x) for x in row
+                        f"{x:>10.6f}" if isinstance(x, float) else str(x) for x in display_row
                     ))
             elif isinstance(v, float):
                 print(f"    {k}: {v:.10f}")

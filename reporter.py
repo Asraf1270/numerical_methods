@@ -12,6 +12,15 @@ def _fmt(v):
     return str(v)
 
 
+def _trim_difference_row(label, row, row_index, n_rows):
+    text = label.lower()
+    if "forward difference table" in text or "divided difference table" in text:
+        return row[: n_rows - row_index]
+    if "backward difference table" in text:
+        return row[: row_index + 1]
+    return row
+
+
 def save_report(method_name, equation, inputs, headers, table, root, iterations, extras=None):
     os.makedirs(RESULTS_DIR, exist_ok=True)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
@@ -56,8 +65,10 @@ def save_report(method_name, equation, inputs, headers, table, root, iterations,
             for k, v in extras.items():
                 if isinstance(v, list):
                     fh.write(f"  {k}:\n")
-                    for row in v:
-                        fh.write("    " + "  ".join(_fmt(x) for x in row) + "\n")
+                    n_rows = len(v)
+                    for i, row in enumerate(v):
+                        display_row = _trim_difference_row(k, row, i, n_rows)
+                        fh.write("    " + "  ".join(_fmt(x) for x in display_row) + "\n")
                 else:
                     fh.write(f"  {k:<22}: {_fmt(v) if isinstance(v,float) else v}\n")
 
