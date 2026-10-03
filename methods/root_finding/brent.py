@@ -9,7 +9,7 @@ It is the default algorithm in most production root finders (e.g., scipy).
 """
 
 import math
-from .base import NumericalMethod
+from ..base import NumericalMethod
 
 
 class Brent(NumericalMethod):

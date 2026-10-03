@@ -1,6 +1,6 @@
 """False Position (Regula Falsi) Method."""
 
-from .base import NumericalMethod
+from ..base import NumericalMethod
 
 
 class FalsePosition(NumericalMethod):

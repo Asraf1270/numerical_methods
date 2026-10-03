@@ -5,7 +5,7 @@ Accelerates fixed-point iteration x = g(x) using Aitken's Δ² extrapolation.
 Achieves quadratic convergence without needing a derivative.
 """
 
-from .base import NumericalMethod
+from ..base import NumericalMethod
 from equation import build_function
 
 

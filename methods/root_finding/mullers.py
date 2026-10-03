@@ -7,7 +7,7 @@ complex roots (not covered here — we keep it real-valued).
 """
 
 import math
-from .base import NumericalMethod
+from ..base import NumericalMethod
 
 
 class Mullers(NumericalMethod):

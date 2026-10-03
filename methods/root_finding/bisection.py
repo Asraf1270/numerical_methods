@@ -1,6 +1,6 @@
 """Bisection Method."""
 
-from .base import NumericalMethod
+from ..base import NumericalMethod
 
 
 class Bisection(NumericalMethod):
