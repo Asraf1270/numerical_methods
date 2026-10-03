@@ -1,4 +1,4 @@
-"""Saves complete run data to a unique .txt report."""
+"""Saves a complete report to a unique .txt file."""
 
 import os
 from datetime import datetime
@@ -12,11 +12,20 @@ def _fmt(v):
     return str(v)
 
 
-def save_report(method_name, equation, inputs, headers, table, root, iterations):
+def _trim_difference_row(label, row, row_index, n_rows):
+    text = label.lower()
+    if "forward difference table" in text or "divided difference table" in text:
+        return row[: n_rows - row_index]
+    if "backward difference table" in text:
+        return row[: row_index + 1]
+    return row
+
+
+def save_report(method_name, equation, inputs, headers, table, root, iterations, extras=None):
     os.makedirs(RESULTS_DIR, exist_ok=True)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
-    safe_name = method_name.replace(" ", "_")
-    filename = os.path.join(RESULTS_DIR, f"{safe_name}_{timestamp}.txt")
+    safe = method_name.replace("/", "_").replace(" ", "_")
+    filename = os.path.join(RESULTS_DIR, f"{safe}_{timestamp}.txt")
 
     with open(filename, "w", encoding="utf-8") as fh:
         line = "=" * 72
@@ -25,13 +34,13 @@ def save_report(method_name, equation, inputs, headers, table, root, iterations)
         fh.write(line + "\n")
         fh.write(f"Method       : {method_name}\n")
         fh.write(f"Date & Time  : {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
-        fh.write(f"Equation     : f(x) = {equation}\n")
+        fh.write(f"Equation     : {equation}\n")
         fh.write("-" * 72 + "\n")
         fh.write("INPUT DATA\n")
         for k, v in inputs.items():
             fh.write(f"  {k:<15}: {v}\n")
         fh.write("-" * 72 + "\n")
-        fh.write("ITERATION TABLE\n")
+        fh.write("ITERATION / COMPUTATION TABLE\n")
         fh.write("-" * 72 + "\n")
 
         widths = []
@@ -47,8 +56,22 @@ def save_report(method_name, equation, inputs, headers, table, root, iterations)
 
         fh.write("-" * 72 + "\n")
         fh.write("FINAL RESULT\n")
-        fh.write(f"  Root approximation : {root:.{FLOAT_PRECISION}f}\n")
-        fh.write(f"  Iterations used    : {iterations}\n")
+        fh.write(f"  Answer          : {_fmt(root)}\n")
+        fh.write(f"  Iterations used : {iterations}\n")
+
+        if extras:
+            fh.write("-" * 72 + "\n")
+            fh.write("ADDITIONAL INFO\n")
+            for k, v in extras.items():
+                if isinstance(v, list):
+                    fh.write(f"  {k}:\n")
+                    n_rows = len(v)
+                    for i, row in enumerate(v):
+                        display_row = _trim_difference_row(k, row, i, n_rows)
+                        fh.write("    " + "  ".join(_fmt(x) for x in display_row) + "\n")
+                else:
+                    fh.write(f"  {k:<22}: {_fmt(v) if isinstance(v,float) else v}\n")
+
         fh.write(line + "\n")
 
     return filename

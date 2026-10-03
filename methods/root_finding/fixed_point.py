@@ -1,6 +1,6 @@
 """Fixed Point Iteration Method."""
 
-from .base import NumericalMethod
+from ..base import NumericalMethod
 from equation import build_function
 
 

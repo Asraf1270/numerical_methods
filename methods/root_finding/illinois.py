@@ -6,7 +6,7 @@ The Illinois modification halves the stagnant endpoint's function value,
 restoring fast convergence while keeping bracketing guarantees.
 """
 
-from .base import NumericalMethod
+from ..base import NumericalMethod
 
 
 class Illinois(NumericalMethod):

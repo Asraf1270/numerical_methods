@@ -8,7 +8,7 @@ like: "1 -1 0 -2"  meaning  1·x³ + (-1)·x² + 0·x + (-2).
 """
 
 import cmath
-from .base import NumericalMethod
+from ..base import NumericalMethod
 
 
 class Bairstow(NumericalMethod):

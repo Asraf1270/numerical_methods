@@ -1,6 +1,6 @@
 """Newton-Raphson Method."""
 
-from .base import NumericalMethod
+from ..base import NumericalMethod
 from equation import numerical_derivative
 
 
