@@ -14,7 +14,7 @@ class NewtonDivided(BaseNumericalMethod):
     description = "Handles non-uniform x values via divided differences."
     category = "interpolation"
     input_spec = [
-        ("points", "Data points as 'x1,y1 x2,y2 ...'", str),
+        ("points", "Data points as '(x1, y1), (x2, y2), ...'", str),
         ("xq", "Value of x to interpolate at", float),
     ]
 

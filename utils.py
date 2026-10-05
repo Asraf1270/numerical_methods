@@ -1,24 +1,30 @@
 """Shared helpers for interpolation methods."""
 
+import re
+
 
 def parse_points(text: str):
     """
-    Parse 'x1,y1 x2,y2 ...' or 'x1,y1; x2,y2; ...' or newline-separated
-    into two lists xs, ys. Raises ValueError with a helpful message.
+    Parse data points in styles like '(x1, y1), (x2, y2), ...',
+    'x1,y1 x2,y2 ...', or 'x1, y1; x2, y2; ...' into two lists xs, ys.
+    Raises ValueError with a helpful message.
     """
-    raw = text.replace(";", " ").replace("\n", " ").strip()
-    tokens = [t for t in raw.split() if t]
+    if text is None:
+        raise ValueError("Data points input is required.")
+
+    numbers = re.findall(r"[-+]?(?:\d*\.\d+|\d+)(?:[eE][-+]?\d+)?", str(text))
+    if len(numbers) < 2 or len(numbers) % 2 != 0:
+        raise ValueError(
+            "Invalid point format. Use '(x1, y1), (x2, y2), ...' or 'x1,y1 x2,y2 ...'."
+        )
 
     xs, ys = [], []
-    for tok in tokens:
-        if "," not in tok:
-            raise ValueError(f"Invalid point '{tok}'. Use format x,y.")
-        x_str, y_str = tok.split(",", 1)
+    for i in range(0, len(numbers), 2):
         try:
-            xs.append(float(x_str))
-            ys.append(float(y_str))
-        except ValueError:
-            raise ValueError(f"Cannot parse numbers from '{tok}'.")
+            xs.append(float(numbers[i]))
+            ys.append(float(numbers[i + 1]))
+        except ValueError as exc:
+            raise ValueError(f"Cannot parse numbers from '{text}'.") from exc
 
     if len(xs) < 2:
         raise ValueError("Need at least 2 data points.")

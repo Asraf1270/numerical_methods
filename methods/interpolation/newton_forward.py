@@ -15,7 +15,7 @@ class NewtonForward(BaseNumericalMethod):
     description = "Forward-difference formula for equally-spaced points (query near start)."
     category = "interpolation"
     input_spec = [
-        ("points", "Data points as 'x1,y1 x2,y2 ...'", str),
+        ("points", "Data points as '(x1, y1), (x2, y2), ...'", str),
         ("xq", "Value of x to interpolate at", float),
     ]
 

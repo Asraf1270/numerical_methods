@@ -14,7 +14,7 @@ class Lagrange(BaseNumericalMethod):
     description = "Builds P(x) through all points; evaluates at a target x."
     category = "interpolation"
     input_spec = [
-        ("points", "Data points as 'x1,y1 x2,y2 ...'", str),
+        ("points", "Data points as '(x1, y1), (x2, y2), ...'", str),
         ("xq", "Value of x to interpolate at", float),
     ]
 
